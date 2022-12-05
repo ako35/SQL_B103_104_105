@@ -303,20 +303,3 @@ SET musteri_isim=(SELECT irtibat_ismi FROM tedarikciler WHERE firma_ismi='Apple'
 WHERE urun_isim='Laptop'
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
