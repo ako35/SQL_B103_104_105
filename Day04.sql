@@ -12,9 +12,39 @@ INSERT INTO calisanlar VALUES(345678901, 'Mine Bulut', 'Izmir');
 
 select * from calisanlar;
 
-select calisan_id as id, calisan_isim || calisan_dogdugu_sehir as calisan_bilgisi from calisanlar
+select calisan_id as id, calisan_isim || ' ' || calisan_dogdugu_sehir as calisan_bilgisi from calisanlar;
 
-select calisan_id as id, concat (calisan_isim, calisan_dogdugu_sehir) as calisan_bilgisi from calisanlar
+select calisan_id as id, concat (calisan_isim,' ', calisan_dogdugu_sehir) as calisan_bilgisi from calisanlar;
+
+drop table personel;
+
+create table personel
+(
+id int,
+isim varchar(50),
+soyisim varchar(50),
+email varchar(50),
+ise_baslama_tar date,
+is_unvani varchar(50),
+maas int
+);
+
+select * from personel;
+
+insert into personel values(123456789,'Ali','Can','alican@gmail.com','10-apr-10','isci',5000);
+insert into personel values(123456788,'Veli','Cem','velicem@gmail.com','10-jan-12','isci',5500);
+insert into personel values(123456787,'Ayse','Gul','aysegul@gmail.com','01-may-14','muhabeseci',4500);
+insert into personel values(123456789,'Fatma','Yasa','fatmayasa@gmail.com','10-apr-09','muhendis',7500);
+
+select isim from personel where maas<5000 or is_unvani='isci';
+
+select * from personel where is_unvani='isci';
+
+select is_unvani, maas from personel where soyisim in('Can', 'Cem', 'Gul');
+
+select email,ise_baslama_tar from personel where maas>5000;
+
+select * from personel where maas between 5000 and 7000;
 
 drop table insanlar;
 
@@ -54,7 +84,7 @@ CREATE TABLE insanlar
 (
 ssn char(9),
 isim varchar(50),
-soyisim varchar(50),  
+soyad varchar(50),  
 adres varchar(50)
 );
 
@@ -69,29 +99,31 @@ select * from insanlar;
 
 select * from insanlar order by adres;
 
-select * from insanlar order by soyisim;
+select * from insanlar order by soyad;
 
 select * from insanlar where isim='Mine' order by ssn;
 
-select * from insanlar where soyisim='Bulut' order by 2;
+select * from insanlar where soyad='Bulut' order by 2;
 
 select * from insanlar order by ssn desc;
 
-select * from insanlar order by isim asc, soyisim desc;
+select * from insanlar order by isim asc, soyad desc;
 
-select isim, soyisim from insanlar order by length (soyisim) desc;
+select isim, soyad from insanlar order by length (soyad) desc;
 
-select isim || ' ' || soyisim as isim_soyisim from insanlar order by length (isim || soyisim);
+select isim || ' ' || soyad as isim_soyisim from insanlar order by length (isim || soyad) desc;
 
-select isim || ' ' || soyisim as isim_soyisim from insanlar order by length (isim) + length (soyisim);
+select isim || ' ' || soyad as isim_soyisim from insanlar order by length (isim) + length (soyad);
 
-select concat(isim, ' ' ,soyisim) as isim_soyisim from insanlar order by length(isim)+ length(soyisim);
+select concat(isim, ' ' ,soyad) as isim_soyisim from insanlar order by length(isim)+ length(soyad);
 
 --GROUP BY CLAUSE
 /*
 Group By komutu sonuçları bir veya daha fazla sütuna göre gruplamak için SELECT
 komutuyla birlikte kullanılır.
 */
+
+drop table if exists manav;
 
 CREATE TABLE manav
 (
@@ -110,6 +142,18 @@ INSERT INTO manav VALUES( 'Veli', 'Uzum', 5);
 INSERT INTO manav VALUES( 'Ali', 'Armut', 2);
 INSERT INTO manav VALUES( 'Veli', 'Elma', 3);
 INSERT INTO manav VALUES( 'Ayse', 'Uzum', 2);
+
+select * from manav;
+
+select isim, sum(urun_miktar) as aldigi_toplam_urun from manav group by isim order by sum(urun_miktar) desc;
+
+select urun_adi, count(isim) from manav group by urun_adi;
+
+select isim, count(urun_adi) from manav group by isim;
+
+
+
+
 
 
 
