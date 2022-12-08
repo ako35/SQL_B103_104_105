@@ -1,3 +1,4 @@
+--group by
 drop table if exists personel;
 
 CREATE TABLE personel
@@ -20,9 +21,10 @@ INSERT INTO personel VALUES(123456710, 'Hatice Sahin', 'Bursa', 4500, 'Honda');
 --1)Isme gore toplam maaslari bulun
 select isim, sum(maas) from personel group by isim;
 
+-- sehire gore toplam personel sayisini bulun
 select isim, count(sehir) from personel group by isim;
 
---1) Her sirketin MIN maaslarini eger 2000’den buyukse goster
+--1) Her sirketin MIN maaslarini eger 4000’den buyukse goster
 select sirket, min(maas) from personel 
 group by sirket having min(maas)>4000;
 
@@ -45,6 +47,19 @@ having max(maas)<5000;
 select isim, maas from personel where maas>4000
 union
 select sehir, maas from personel where maas>5000;
+
+-- mehmet ozturk ismindeki kisilerin aldigi maaslari ve istanbul'daki personelin maaslarini
+-- bir tabloda gosteren sorgu yaziniz
+select sehir, maas from personel where sehir='Istanbul'
+union
+select isim, maas from personel where isim='Mehmet Ozturk'
+order by maas desc;
+
+--sehirlerden odenen ucret 3000'den fazla olanlari ve personelden ucreti 5000'den az olanlari bir tabloda 
+--maas miktarina gore sirali olarak gosteren sorguyu yaziniz
+select sehir, maas from personel where maas>3000
+union
+select isim, maas from personel where maas<5000;
 
 DROP TABLE if exists personel
 
@@ -101,10 +116,20 @@ select isim, maas from personel where maas<5000
 union all
 select isim, maas from personel where maas<5000;
 
+select sehir, maas from personel where maas>4000
+union all
+select isim, maas from personel where maas<5000;
+
+--intersect (kesisim)-iki tablonun ortak verilerini verir.
+
 -- Personel tablosundan Istanbul veya Ankara’da calisanlarin id’lerini yazdir
 -- Personel_bilgi tablosundan 2 veya 3 cocugu olanlarin id lerini yazdirin
 --Iki sorguyu INTERSECT ile birlestirin
 select id from personel where sehir in ('Istanbul', 'Ankara')
+intersect
+select id from personel_bilgi where cocuk_sayisi in (2,3);
+
+select id from personel where maas not between 4800 and 5500;
 intersect
 select id from personel_bilgi where cocuk_sayisi in (2,3);
 
