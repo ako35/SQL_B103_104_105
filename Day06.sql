@@ -25,6 +25,21 @@ INSERT INTO siparisler VALUES(55,  105, ' 2020-04-21');
 select sirketler.sirket_isim, siparisler.siparis_id, siparisler.siparis_tarihi
 from sirketler inner join siparisler on sirketler.sirket_id=siparisler.sirket_id;
 
+select sirketler.sirket_isim, siparisler.siparis_id, siparisler.siparis_tarihi
+from sirketler left join siparisler on sirketler.sirket_id=siparisler.sirket_id;
+
+select sirketler.sirket_isim, siparisler.siparis_id, siparisler.siparis_tarihi
+from sirketler right join siparisler on sirketler.sirket_id=siparisler.sirket_id;
+
+--ornek
+select sirket_id from sirketler 
+intersect
+select sirket_id from siparisler
+
+--full join
+select sirketler.sirket_isim, siparisler.siparis_id, siparisler.siparis_tarihi
+from sirketler full join siparisler on sirketler.sirket_id=siparisler.sirket_id;
+
 drop table if exists personel cascade;
 
 CREATE TABLE personel 
@@ -43,7 +58,7 @@ INSERT INTO personel VALUES(4, 'Fatma Can', 'CEO', 5);
 select * from personel;
 
 --Her personelin yanina yonetici ismini yazdiran bir tablo olusturun
-select isim from personel
+select isim from personel;
 select p1.isim, p2.isim from personel p1 inner join personel p2 on p1.yonetici_id=p2.id;
 
 drop table if exists musteriler;
@@ -110,6 +125,13 @@ select * from kelimeler where kelime ~ 'h[ai]t';
 --SORU : Ilk harfi h,son harfi t olup 2.harfi a ile k arasinda olan 3 harfli kelimelerin
 --tum bilgilerini  yazdiran QUERY yazin
 select * from kelimeler where kelime ~* 'h[a-k]t';
+-- * isareti buyuk kucuk gozetmeksizin calisir
+
+-- icinde m veya i olan kelimelerin tum bilgilerini yazdiran sorguyu yazin
+select * from kelimeler where kelime ~ '[mi]';
+
+-- a veya s ile baslayan kelimelerin tum bilgilerini yazdiran sorguyu yazin
+select * from kelimeler where kelime ~ '^[as]'
 
 --SORU : a veya s ile baslayan kelimelerin tum bilgilerini yazdiran QUERY yazin
 select * from kelimeler where kelime ~* '^[as]';
@@ -128,6 +150,12 @@ NOT ILIKE = !~~*
 NOT REGEXP_LIKE = !~*
 NOT REGEXP_LIKE = !~
  */
+ 
+ --ikinci ve ucuncu harfi 'de' olmayan kelimelerin tum bilgilerini yazdiran sorguyu yaziniz
+ select * from kelimeler where kelime not like '_de%';
+ 
+ --2. harfi e, i veya o olmayan kelimelerin tum bilgilerini yazdiran sorguyu yaziniz
+ select * from kelimeler where kelime !~'[_eio]';
 
 --kelimeler tablosundaki kelime sutunundaki verileri once hepsi buyuk harf sonra kucuk harf 
 --ve ilk harfleri buyuk harf olucak sekilde yazdiralim
@@ -139,6 +167,8 @@ select initcap(kelime)from kelimeler;
 --musteriler tablosundan butun isimleri buyuk harf yapiniz
 select upper (isim) from musteriler;
 
+--eger birden fazla sutundaki verileri buyuk kucuk harf yapmak istersek
+select lower (title), upper (isim) from personel;
 
 
 
