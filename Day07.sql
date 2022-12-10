@@ -1,3 +1,5 @@
+--distinct kullanimi
+
 CREATE TABLE musteri_urun 
 (
 urun_id int, 
@@ -18,13 +20,13 @@ select * from musteri_urun;
 
 --musteri urun tablosundan urun isimlerini tekrarsiz listeleyiniz
 --distinct ile cozumu
-select distinct urun_isim from musteri_urun;
+select distinct(urun_isim) from musteri_urun;
 
 --group by ile cozumu
 select urun_isim from musteri_urun group by urun_isim;
 
 -- Tabloda kac farkli meyve vardir ?
-select count (distinct urun_isim) from musteri_urun
+select count(distinct(urun_isim)) from musteri_urun
 group by urun_isim;
 
 --fetch next () row only / offset / limit
@@ -98,7 +100,7 @@ alter table personel add adres varchar(50) default 'Turkiye';
 
 alter table personel add zipcode varchar(30);
 
---drop tablodan surun silme
+--drop tablodan sutun silme
 alter table personel drop column zipcode;
 
 alter table personel drop ulke_isim;
@@ -114,11 +116,15 @@ select * from isci;
 --type / set (modify) sutunlarin ozelliklerini degistirme
 alter table isci alter column il type varchar(30), alter column maas set not null;
 
-alter column maas type int using(maas::varchar(30));
+alter table isci alter column maas type varchar(30) using(maas::varchar(30))
+
+alter table isci alter column maas type int using(maas::varchar(30));
 
 drop table ogrenciler2;
 
--- TRANSACTION 
+-- TRANSACTION (begin-savepoint-rollback-commit )
+
+--transaction baslatmak icin begin komutu kullanmamiz gerekir ve transaction'i sonlandirmak icin commit komutu calistirilir
 CREATE TABLE ogrenciler2
 (
 id serial,
@@ -142,7 +148,7 @@ savepoint y;
 INSERT INTO ogrenciler2 VALUES(default, 'Mustafa Bak', 'Can',99);
 INSERT INTO ogrenciler2 VALUES(default, 'Can Bak', 'Ali', 67.5);
 
-ROLLBACK to x;
+ROLLBACK to y;
 
 COMMIT;
 
